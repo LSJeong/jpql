@@ -26,13 +26,19 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            //member.setUsername("member1" );
-            member.setUsername(null);
+            member.setUsername("member1");
+            //member.setUsername(null);
             member.setAge(10);
             member.setType(MemberType.ADMIN);
             member.setTeam(team);
-
             em.persist(member);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setAge(10);
+            member2.setType(MemberType.USER);
+            member2.setTeam(team);
+            em.persist(member2);
 
 
 /*
@@ -140,13 +146,22 @@ public class JpaMain {
             //String query = "select coalesce(m.username,'이름 없는 회원') from Member m";
 
             //NULLIF: 두 값이 같으면 null 반환, 다르면 첫번째 값 반환
-            String query = "select NULLIF(m.username, '관리자') from Member m";
+//            String query = "select NULLIF(m.username, '관리자') from Member m";
+//
+//            List<String> result = em.createQuery(query, String.class)
+//                    .getResultList();
+//            for (String s : result) {
+//                System.out.println("s = " + s);
+//            }
 
-            List<String> result = em.createQuery(query, String.class)
+
+            String query1 = "select group_concat(m.username) from Member m";
+            List<String> result1 = em.createQuery(query1, String.class)
                     .getResultList();
-            for (String s : result) {
+            for (String s : result1) {
                 System.out.println("s = " + s);
             }
+
             tx.commit();
         }catch (Exception e){
             tx.rollback();
