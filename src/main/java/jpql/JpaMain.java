@@ -28,6 +28,7 @@ public class JpaMain {
             Member member = new Member();
             member.setUsername("member1" );
             member.setAge(10);
+            member.setType(MemberType.ADMIN);
             member.setTeam(team);
 
             em.persist(member);
@@ -104,6 +105,26 @@ public class JpaMain {
 
             List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
+
+
+            //JPQL 타입 표현
+            //ENUM은 패키지명 포함해서 적어준다
+//            String query1 = "select m.username, 'HELLO', TRUE from Member m " +
+//                    "where m.type = jpql.MemberType.ADMIN";
+//            List<Object[]> resultList1 = em.createQuery(query1).getResultList();
+
+            //이렇게 적어주면 됨
+            String query1 = "select m.username, 'HELLO', TRUE from Member m " +
+                   "where m.type = :userType";
+            List<Object[]> resultList1 = em.createQuery(query1)
+                    .setParameter("userType", MemberType.ADMIN)
+                    .getResultList();
+
+            for (Object[] objects : resultList1) {
+                System.out.println("objects[0] = " + objects[0]);
+                System.out.println("objects[1] = " + objects[1]);
+                System.out.println("objects[2] = " + objects[2]);
+            }
 
             tx.commit();
         }catch (Exception e){
