@@ -163,13 +163,23 @@ public class JpaMain {
 //            }
 
             //Named Query
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+            /*List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
                     .setParameter("username", "회원1")
                     .getResultList();
 
             for (Member member1 : resultList) {
                 System.out.println("member1 = " + member1);
-            }
+            }*/
+
+            //벌크 연산 : 여러 건(대량의 데이터)을 한 번에 수정하거나 삭제
+            //flush 자동 호출
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+            System.out.println("resultCount = " + resultCount);
+
+            //벌크 연산 수행 후 영속성 컨텍스트 초기화
+            em.clear();
+
             tx.commit();
         }catch (Exception e){
             tx.rollback();
