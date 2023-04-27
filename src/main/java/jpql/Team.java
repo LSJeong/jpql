@@ -1,5 +1,7 @@
 package jpql;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,7 +17,8 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "team")  //글로벌 로딩 전략, 글로벌 로딩 전략보다 fetch조인이 우선
     private List<Member> members = new ArrayList<>();
 
     public Long getId() {
