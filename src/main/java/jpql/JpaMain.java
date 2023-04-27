@@ -162,6 +162,7 @@ public class JpaMain {
 //                System.out.println("s = " + s);
 //            }
 
+            //Named Query
             List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
                     .setParameter("username", "회원1")
                     .getResultList();
